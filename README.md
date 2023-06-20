@@ -13,5 +13,5 @@ The reason when the genetic feature selection algorithm is the high number of co
 
 An example of the genetic model generation for information retrieval is here
 
-3. Kulunchakov A.S., Strijov V.V. Generation of simple structured Information Retrieval functions by genetic algorithm without stagnation // Expert Systems with Applications, 2017, 85: 221-230. (DOI: 10.1016/j.eswa.2017.05.019)[https://doi.org/10.1016/j.eswa.2017.05.019]
+3. Kulunchakov A.S., Strijov V.V. Generation of simple structured Information Retrieval functions by genetic algorithm without stagnation // Expert Systems with Applications, 2017, 85: 221-230. [DOI: 10.1016/j.eswa.2017.05.019](https://doi.org/10.1016/j.eswa.2017.05.019)
 
