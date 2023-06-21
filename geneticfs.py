@@ -26,7 +26,8 @@ class GeneticFS:
         self.plot_cap = True  # Plot progressive epochs
         self.pop_report = True  # Print them
         self.warnings_off = True
-        self.__create_population(n_features)
+        # The population keeps the number of feature (not indicator)
+        self.__create_population(n_features)  # self.population
         # There is no need to evaluate the population now
         self.scores = np.zeros(self.pop_size)  # The score is positive, the bigger the better
         # Collect statistics of best features over populations
@@ -45,13 +46,17 @@ class GeneticFS:
             if self.plot_cap:
                 values = self.topM_feat[1, :] / np.max(self.topM_feat[1, :])
                 self.plot_biosemi(values)
+                values = np.zeros(X[0].shape)
+                kid = self.population[0, :]  # Copy the best kid
+                values[kid] = 1  # Make an indicator function
+                self.plot_biosemi(values)
             if self.pop_report:
                 print(f'Iteration: {i}, score of best: {self.topM_score[1]}, features: {self.topM_feat[1, :]}')
                 print(f'Scores: {self.scores}')
         # Save and show results
         # save_population() # this function is commented
-        nameFeatures = [f"f_{i}" for i in range(1, 65)]  # FIXIT
-        self.print_statistics(self.topM_feat[1], nameFeatures)
+        nameFeatures = [f"f_{i}" for i in range(1, 64)]  # FIXIT
+        self.print_statistics(self.topM_feat[0], nameFeatures)
 
     #  ----------------------------- ---------------------------------
     def __create_population(self, n_features):
@@ -113,8 +118,8 @@ class GeneticFS:
         acc = np.mean(y_test == y_pred)
         # print(f'Accuracy = {acc}')
         # Part for AUC
-        # y_pred = clf.predict_proba(X_test)[::, 1]  # Probability for AUC
-        # auc = metrics.roc_auc_score(y_test, y_pred)
+        #y_pred = clf.predict_proba(X_test)[::, 1]  # Probability for AUC
+        #auc = metrics.roc_auc_score(y_test, y_pred)
         # fpr, tpr, _ = metrics.roc_curve(y_test, y_pred)
         # print(f'Accuracy = {auc}')
         return acc  # auc  # acc
