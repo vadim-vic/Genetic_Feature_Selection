@@ -10,9 +10,9 @@ from sklearn.model_selection import train_test_split
 # Genetic algorithm meta-parameters
 K_BEST = 16  # Number of resulting features
 M_BEST = 3  # Number of rhe best models
-POP_SIZE = 14  # Number of various models min = M_BEST
+POP_SIZE = 40  # Number of various models min = M_BEST
 MUT_PROB = 6 * 1 / K_BEST  # Chance of mutation for each feature WAS:2
-MAX_ITER = 10000  # Times POP_SIZE equals number of fits
+MAX_ITER = 100  # Times POP_SIZE equals number of fits
 
 
 # Class Genetic feature selection
@@ -94,13 +94,13 @@ class GeneticFS:
         # Third genetic step is to evaluate the quality of each member
         for idx, kid in enumerate(offspring):
             X_cut = X[:, kid]
-            auc = self.__one_cls(X_cut, Y, clf)
+            auc = self.one_cls(X_cut, Y, clf)
             scores_offspring[idx] = auc  # Evaluate each member of the offspring
         return scores_offspring
 
     #  ----------------------------- ---------------------------------
     # Classify for parameter optimization and accuracy evaluation
-    def __one_cls(self, X, Y, clf):
+    def one_cls(self, X, Y, clf):
         X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.4, random_state=0)
         if self.warnings_off:
             with warnings.catch_warnings():
@@ -109,15 +109,15 @@ class GeneticFS:
         else:
             clf.fit(X_train, y_train)
         # Part for accuracy
-        # y_pred = clf.predict(X_test)
-        # acc = np.mean(y_test == y_pred)
+        y_pred = clf.predict(X_test)
+        acc = np.mean(y_test == y_pred)
         # print(f'Accuracy = {acc}')
         # Part for AUC
-        y_pred = clf.predict_proba(X_test)[::, 1]  # Probability for AUC
-        auc = metrics.roc_auc_score(y_test, y_pred)
+        # y_pred = clf.predict_proba(X_test)[::, 1]  # Probability for AUC
+        # auc = metrics.roc_auc_score(y_test, y_pred)
         # fpr, tpr, _ = metrics.roc_curve(y_test, y_pred)
         # print(f'Accuracy = {auc}')
-        return auc  # acc
+        return acc  # auc  # acc
 
     #  ----------------------------- ---------------------------------
     def __update_population(self, offspring, scores_offspring):

@@ -13,6 +13,8 @@ from sklearn import metrics
 import warnings
 # Plot the feature map in demo
 import matplotlib.pyplot as plt
+# The algorithm itself
+from geneticfs import GeneticFS
 
 # Load the Digits data
 digits = datasets.load_digits()
@@ -31,6 +33,17 @@ matrix = np.reshape(vector, (8, 8))  # This reshape will be used for visualizati
 plt.figure(1, figsize=(3, 3))
 plt.imshow(matrix, cmap=plt.cm.gray_r, interpolation="nearest")
 plt.show()
+
+# Prepare the variables
+X = digits.data
+Y = digits.target
+clf = LogisticRegression(C=0.05)
+# Run one-time classification on the whole dataset
+gen = GeneticFS(64)
+# auc = gen.one_cls(X, Y, clf)
+# print(auc)
+gen.fit(X, Y, clf)
+
 
 
 def print_hi(name):
